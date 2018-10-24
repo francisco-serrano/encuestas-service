@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from EncuestasDatabase import EncuestasDatabase
+import json
 
 app = Flask(__name__)
 db = EncuestasDatabase('encuestas.db')
@@ -15,7 +16,9 @@ def get_encuestas():
     rows = db.find_all()
     column_names = db.get_columns()
 
-    return jsonify(list(map(lambda row: dict(zip(column_names, row)), rows)))
+    aux = list(map(lambda row: dict(zip(column_names, row)), rows))
+
+    return json.dumps(aux, ensure_ascii=False).encode('utf-8')
 
 
 if __name__ == '__main__':
